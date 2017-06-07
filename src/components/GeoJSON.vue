@@ -1,11 +1,15 @@
 <template></template>
 
 <script>
+import eventsBinder from '../utils/eventsBinder.js';
+
+const events = ['click'];
 
 export default {
   props: ['geojson', 'options'],
   mounted() {
     this.$geoJSON = L.geoJSON(this.geojson, this.options);
+    eventsBinder(this, this.$geoJSON, events);
 
     if (this.$parent._isMounted) {
       this.deferredMountedTo(this.$parent.$geoJSON);
