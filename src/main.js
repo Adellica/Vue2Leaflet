@@ -4,6 +4,7 @@ exports.LayerGroup = require('./components/LayerGroup');
 exports.LCircle = require('./components/LCircle');
 exports.Map = require('./components/Map');
 exports.Marker = require('./components/Marker');
+exports.CircleMarker = require('./components/CircleMarker');
 exports.Polygon = require('./components/Polygon');
 exports.Polyline = require('./components/Polyline');
 exports.Popup = require('./components/Popup');
