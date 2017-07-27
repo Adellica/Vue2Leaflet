@@ -5,8 +5,23 @@ import eventsBinder from '../utils/eventsBinder.js';
 
 const events = ['click'];
 
+const props = {
+  visible: {
+    type: Boolean,
+    custom: true,
+    default: true,
+  },
+  geojson: {
+    type: Object,
+  },
+  options: {
+    type: Object,
+    default: () => ({}),
+  },
+};
+
 export default {
-  props: ['geojson', 'options'],
+  props: props,
   mounted() {
     this.$geoJSON = L.geoJSON(this.geojson, this.options);
     eventsBinder(this, this.$geoJSON, events);
@@ -26,11 +41,16 @@ export default {
       },
       deep: true,
     },
+    visible(newVal, oldVal) {
+      this.setVisible(newVal, oldVal);
+    },
   },
   methods: {
     deferredMountedTo(parent) {
       this.parent = parent;
-      this.$geoJSON.addTo(parent);
+      if (this.visible) {
+        this.$geoJSON.addTo(parent);
+      }
       for (var i = 0; i < this.$children.length; i++) {
         this.$children[i].deferredMountedTo(parent);
       }
