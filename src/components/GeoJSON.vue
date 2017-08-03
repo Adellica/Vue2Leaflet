@@ -23,11 +23,11 @@ const props = {
 export default {
   props: props,
   mounted() {
-    this.$geoJSON = L.geoJSON(this.geojson, this.options);
-    eventsBinder(this, this.$geoJSON, events);
+    this.mapObject = L.geoJSON(this.geojson, this.options);
+    eventsBinder(this, this.mapObject, events);
 
     if (this.$parent._isMounted) {
-      this.deferredMountedTo(this.$parent.$geoJSON);
+      this.deferredMountedTo(this.$parent.mapObject);
     }
   },
   beforeDestroy() {
@@ -36,7 +36,7 @@ export default {
   watch: {
     geojson: {
       handler(newVal) {
-        this.$geoJSON.clearLayers()
+        this.mapObject.clearLayers()
         this.addGeoJSONData(newVal);
       },
       deep: true,
@@ -49,27 +49,27 @@ export default {
     deferredMountedTo(parent) {
       this.parent = parent;
       if (this.visible) {
-        this.$geoJSON.addTo(parent);
+        this.mapObject.addTo(parent);
       }
       for (var i = 0; i < this.$children.length; i++) {
         this.$children[i].deferredMountedTo(parent);
       }
     },
     addGeoJSONData(geojsonData) {
-      this.$geoJSON.addData(geojsonData);
+      this.mapObject.addData(geojsonData);
     },
     getGeoJSONData() {
-      return this.$geoJSON.toGeoJSON();
+      return this.mapObject.toGeoJSON();
     },
     getBounds() {
-      return this.$geoJSON.getBounds();
+      return this.mapObject.getBounds();
     },
     setVisible(newVal, oldVal) {
       if (newVal === oldVal) return;
       if (newVal) {
-        this.$geoJSON.addTo(this.parent);
+        this.mapObject.addTo(this.parent);
       } else {
-        this.parent.removeLayer(this.$geoJSON);
+        this.parent.removeLayer(this.mapObject);
       }
     },
   }
